@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 const AuthContextProvider = (props) => {
    
     const [isLoggedIn, setIsLoggedIn] = useState(getCookie('token').token ? true : false);
-    const [userProfile, setUserProfile] = useState([]);
+    // const [userProfile, setUserProfile] = useState([]);
 
 
     useEffect(() => {
@@ -21,8 +21,8 @@ const AuthContextProvider = (props) => {
                     Authorization: `Token ${token}`
                 },
             };
-            const results = await axios.get(`${baseUrl}user/login/`, axiosConfig)
-            setUserProfile(results.data)
+            // const results = await axios.get(`${baseUrl}user/login/`, axiosConfig)
+            // setUserProfile(results.data)
         }
 
         fetchedData()
@@ -30,7 +30,7 @@ const AuthContextProvider = (props) => {
     },[isLoggedIn])
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn,setIsLoggedIn,userProfile }}>
+        <AuthContext.Provider value={{ isLoggedIn,setIsLoggedIn }}>
             {props.children}
         </AuthContext.Provider>
     )
