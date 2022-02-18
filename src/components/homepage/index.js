@@ -161,7 +161,18 @@ const Homepage = () => {
     await importFile(formData)
     .then(response=>{
       console.log(response)
-      window.location.reload();
+      if (response.data.warning){
+        toast.success(response.data.detail)
+        toast.success(response.data.warning)
+      }
+      else{
+        toast.success(response.data.detail) 
+      }
+      
+      setTimeout(()=>{
+        window.location.reload();
+
+      },3000)
 
     })
     

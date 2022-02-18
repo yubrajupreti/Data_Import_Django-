@@ -1,9 +1,9 @@
-export const baseUrlProd1 = 'http://127.0.0.1:8000';
-export const baseUrlDev1 = 'http://127.0.0.1:8000';
+export const baseUrlProd1 = 'http://employee-nepal.herokuapp.com';
+export const baseUrlDev1 = 'http://employee-nepal.herokuapp.com';
 export const baseUrl1 = process.env.NODE_ENV === 'development' ? baseUrlDev1 : baseUrlProd1;
 
-export const baseUrlProd = 'http://127.0.0.1:8000/api/';
-export const baseUrlDev = 'http://127.0.0.1:8000/api/';
+export const baseUrlProd = 'http://employee-nepal.herokuapp.com/api/';
+export const baseUrlDev = 'http://employee-nepal.herokuapp.com/api/';
 export const baseUrl = process.env.NODE_ENV === 'development' ? baseUrlDev : baseUrlProd;
 
 //Auth
