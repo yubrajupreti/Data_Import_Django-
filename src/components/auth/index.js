@@ -33,7 +33,7 @@ const Login = () => {
     .then(data=>{
       console.log(data.data.token)
       setCookie('token',data.data.token);
-      window.location.href = "/dashboard";
+      window.location.href = "/homepage";
 
     })
     .catch(err=>{
@@ -50,7 +50,7 @@ const Login = () => {
   useEffect(() => {
     if (isLoggedIn) {
 
-      window.location.href = "/dashboard";
+      window.location.href = "/homepage";
     }
 }, [])
 

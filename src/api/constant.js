@@ -10,4 +10,6 @@ export const baseUrl = process.env.NODE_ENV === 'development' ? baseUrlDev : bas
 export const USER_LOGIN_URL = baseUrl + 'login/';
 export const USER_LOGOUT_URL = baseUrl + 'logout/';
 
-export const USER_URL = baseUrl + 'homepage/';
+export const HOMEPAGE_URL = baseUrl + 'employee/';
+
+export const IMPORT_FILE=baseUrl +'import/'
