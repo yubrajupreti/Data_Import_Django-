@@ -7,7 +7,7 @@
 /venv
 **/__pycache__
 **/migrations
-/Procfile
+
 /runtime.txt
 /package-lock.json
 db.sqlite3
