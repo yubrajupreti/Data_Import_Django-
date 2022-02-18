@@ -1,6 +1,14 @@
 import json
+import os
+
 import pandas as pd
+import xlwt
+from django.http import HttpResponse, HttpResponseNotFound
+from django.views import View
 from django_filters.rest_framework import DjangoFilterBackend
+
+from .resources import EmployeeDetail
+
 
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -21,7 +29,7 @@ class EmployeeDetailView(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['created_by__username','created_date']
     search_fields = ['id','created_by__username','created_date','full_name']
-    ordering_fields = ['id','created_by__username','created_date','full_name']
+    ordering_fields = ['id','created_by__username','created_date','full_name','salary']
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
@@ -69,7 +77,7 @@ class ImportDetailView(APIView):
                     elif key == 'Date of Birth':
 
                         try:
-                            dob = datetime.strptime(single_obj['Date of Birth'], '%Y/%m/%d')
+                            dob = datetime.strptime(single_obj['Date of Birth'], '%Y/%m/%d').date()
 
                         except:
                             raise ValidationError(
@@ -163,4 +171,51 @@ class ImportDetailView(APIView):
 
 
 
+class ExcelDownloadView(APIView):
 
+    def post(self,request,*args,**kwargs):
+        ids=request.data['id']
+        result = EmployeeDetail.objects.filter(id__in=ids)
+        serializers=EmployeeExportSerializer(result, many=True)
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Users')
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = ['Name', 'Date of Birth ', 'Gender', 'Salary','Designation']
+
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        rows = serializers.data
+        data_key = ['full_name', 'dob', 'gender', 'salary','designation']
+        for row in rows:
+            row_num += 1
+            # import pdb;pdb.set_trace()
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[data_key[col_num]], font_style)
+
+        wb.save(response)
+        return response
+
+class Assets(View):
+
+    def get(self, _request, filename):
+        path = os.path.join(os.path.dirname(__file__), 'static', filename)
+
+        if os.path.isfile(path):
+            with open(path, 'rb') as file:
+                return HttpResponse(file.read(), content_type='application/javascript')
+        else:
+            return HttpResponseNotFound()

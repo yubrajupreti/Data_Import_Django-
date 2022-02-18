@@ -11,4 +11,5 @@ urlpatterns = [
 
 	path('',include(router.urls)),
 	path('import/', ImportDetailView.as_view(), name='import'),
+	path('export-excel/', ExcelDownloadView.as_view(), name='import'),
 ]

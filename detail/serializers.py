@@ -5,9 +5,10 @@ from rest_framework import serializers
 from .models import *
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):
+    username=serializers.CharField(source='created_by.username',read_only=True)
     class Meta:
         model=EmployeeDetail
-        fields=['created_by','created_date','full_name','salary','gender','designation','dob']
+        fields=['id','created_by','created_date','full_name','salary','gender','designation','dob','username']
         extra_kwargs = {
             'created_by':{'read_only':True}
         }
@@ -21,6 +22,12 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError({'detail':'datetime'})
 
 
+class EmployeeExportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=EmployeeDetail
+        fields=['full_name','salary','dob','designation','gender']
+
+
 class FileUploadSerializer(serializers.Serializer):
     file=serializers.FileField()
     class Meta:
@@ -32,3 +39,4 @@ class FileUploadSerializer(serializers.Serializer):
                 raise serializers.ValidationError("Only csv and excel file are accepted")
 
             return file
+
