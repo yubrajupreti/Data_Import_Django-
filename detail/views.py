@@ -150,7 +150,7 @@ class ImportDetailView(APIView):
 
             if file.name.endswith('.xlsx'):
                 full_path=temporary_file(file)
-                excel_data_fragment = pd.read_excel(full_path)
+                excel_data_fragment = pd.read_excel(full_path, engine='openpyxl')
                 json_str = excel_data_fragment.to_json(orient='records')
 
             elif file.name.endswith('.csv'):
